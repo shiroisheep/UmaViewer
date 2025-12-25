@@ -263,6 +263,16 @@ public class UmaDatabaseController
                 throw new InvalidOperationException("DB validation after key failed: " + validateErr);
             }
 
+            try
+            {
+                string dumpPath = Path.Combine(Config.Instance.MainPath, "meta_dec.db");
+                MetaPlaintextDumper.Dump(db, dumpPath);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Meta dump failed: " + ex);
+            }
+
             string sql = "SELECT m,n,h,c,d,e,l FROM a";
             Sqlite3MC.ForEachRow(sql, db, (stmt) =>
             {
